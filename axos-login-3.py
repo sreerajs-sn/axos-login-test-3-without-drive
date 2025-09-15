@@ -21,6 +21,43 @@ def log(msg):
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{timestamp}] {msg}")
 
+
+# ================== EMAIL FUNCTION ==================
+
+
+FROM_EMAIL = os.environ.get("FROM_EMAIL")
+TO_EMAIL = os.environ.get("TO_EMAIL")
+SMTP_PASSWORD = os.environ.get("EMAIL_SMTP_APP_PASSWORD")
+
+def send_email_with_attachment(subject, body, file_path):
+    log("Preparing email with screenshot...")
+    msg = MIMEMultipart()
+    msg['From'] = FROM_EMAIL
+    msg['To'] = TO_EMAIL
+    msg['Subject'] = subject
+
+    msg.attach(MIMEText(body, 'plain'))
+
+    with open(file_path, "rb") as attachment:
+        part = MIMEBase('application', 'octet-stream')
+        part.set_payload(attachment.read())
+        encoders.encode_base64(part)
+        part.add_header('Content-Disposition', f'attachment; filename={os.path.basename(file_path)}')
+        msg.attach(part)
+
+    log("Sending email...")
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(FROM_EMAIL, SMTP_PASSWORD)
+    server.sendmail(FROM_EMAIL, TO_EMAIL, msg.as_string())
+    server.quit()
+    log("✅ Email sent successfully.")
+
+
+
+
+
+
 # ================== OTP FETCH FUNCTION ==================
 def fetch_latest_otp(wait_time=60, check_interval=5):
     log("Starting OTP fetch process...")
@@ -155,6 +192,15 @@ try:
     driver.save_screenshot(screenshot_path)
     log(f"📸 Screenshot saved to: {screenshot_path}")
 
+
+log(f"📸 Screenshot saved to: {screenshot_path}")
+    send_email_with_attachment(
+        subject="Axos Login Screenshot",
+        body="Attached is the latest Axos login screenshot.",
+        file_path=screenshot_path
+    )
+
+
 except Exception as e:
     log(f"❌ Login failed: {str(e)}")
 
@@ -162,31 +208,5 @@ finally:
     log("Closing browser...")
     driver.quit()
 
-FROM_EMAIL = os.environ.get("FROM_EMAIL")
-TO_EMAIL = os.environ.get("TO_EMAIL")
-SMTP_PASSWORD = os.environ.get("EMAIL_SMTP_APP_PASSWORD")
 
-def send_email_with_attachment(subject, body, file_path):
-    log("Preparing email with screenshot...")
-    msg = MIMEMultipart()
-    msg['From'] = FROM_EMAIL
-    msg['To'] = TO_EMAIL
-    msg['Subject'] = subject
-
-    msg.attach(MIMEText(body, 'plain'))
-
-    with open(file_path, "rb") as attachment:
-        part = MIMEBase('application', 'octet-stream')
-        part.set_payload(attachment.read())
-        encoders.encode_base64(part)
-        part.add_header('Content-Disposition', f'attachment; filename={os.path.basename(file_path)}')
-        msg.attach(part)
-
-    log("Sending email...")
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(FROM_EMAIL, SMTP_PASSWORD)
-    server.sendmail(FROM_EMAIL, TO_EMAIL, msg.as_string())
-    server.quit()
-    log("✅ Email sent successfully.")
 
