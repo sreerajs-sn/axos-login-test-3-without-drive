@@ -4,20 +4,17 @@ import imaplib
 import email
 import re
 import datetime
-from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-load_dotenv()
-
 # ================== CONFIG ==================
-USERNAME = os.getenv("EMAIL_USERNAME")
-PASSWORD = os.getenv("EMAIL_PASSWORD")
-IMAP_SERVER = os.getenv("IMAP_SERVER")
-AXOS_USERNAME = os.getenv("AXOS_USERNAME")
-AXOS_PASSWORD = os.getenv("AXOS_PASSWORD")
+USERNAME = os.environ.get("EMAIL_USERNAME")
+PASSWORD = os.environ.get("EMAIL_PASSWORD")
+IMAP_SERVER = os.environ.get("IMAP_SERVER")
+AXOS_USERNAME = os.environ.get("AXOS_USERNAME")
+AXOS_PASSWORD = os.environ.get("AXOS_PASSWORD")
 
 # ================== LOGGING FUNCTION ==================
 def log(msg):
