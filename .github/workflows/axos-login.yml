@@ -1,0 +1,59 @@
+name: Axos Login Automation (Hourly Burst)
+
+on:
+  schedule:
+    - cron: '30 15 15 9 *'  # 9:00 PM IST
+    - cron: '35 15 15 9 *'  # 9:05 PM IST
+    - cron: '40 15 15 9 *'  # 9:10 PM IST
+    - cron: '45 15 15 9 *'  # 9:15 PM IST
+    - cron: '50 15 15 9 *'  # 9:20 PM IST
+    - cron: '55 15 15 9 *'  # 9:25 PM IST
+    - cron: '0 16 15 9 *'   # 9:30 PM IST
+    - cron: '5 16 15 9 *'   # 9:35 PM IST
+    - cron: '10 16 15 9 *'  # 9:40 PM IST
+    - cron: '15 16 15 9 *'  # 9:45 PM IST
+    - cron: '20 16 15 9 *'  # 9:50 PM IST
+    - cron: '25 16 15 9 *'  # 9:55 PM IST
+
+  workflow_dispatch:  # Optional manual trigger
+
+jobs:
+  login:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v3
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: 📦 Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install selenium
+
+    - name: 🔐 Set environment variables
+      env:
+        EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
+        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        IMAP_SERVER: ${{ secrets.IMAP_SERVER }}
+        AXOS_USERNAME: ${{ secrets.AXOS_USERNAME }}
+        AXOS_PASSWORD: ${{ secrets.AXOS_PASSWORD }}
+      run: |
+        echo "EMAIL_USERNAME=$EMAIL_USERNAME" >> $GITHUB_ENV
+        echo "EMAIL_PASSWORD=$EMAIL_PASSWORD" >> $GITHUB_ENV
+        echo "IMAP_SERVER=$IMAP_SERVER" >> $GITHUB_ENV
+        echo "AXOS_USERNAME=$AXOS_USERNAME" >> $GITHUB_ENV
+        echo "AXOS_PASSWORD=$AXOS_PASSWORD" >> $GITHUB_ENV
+
+    - name: 🧪 Run Axos login script
+      run: python axos_login.py
+
+    - name: 📤 Upload screenshot artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: axos-login-screenshot
+        path: screenshots/
