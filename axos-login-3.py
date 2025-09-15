@@ -193,13 +193,14 @@ try:
     log(f"📸 Screenshot saved to: {screenshot_path}")
 
 
-log(f"📸 Screenshot saved to: {screenshot_path}")
+try:
+    # your selenium logic
+    log(f"📸 Screenshot saved to: {screenshot_path}")
     send_email_with_attachment(
         subject="Axos Login Screenshot",
         body="Attached is the latest Axos login screenshot.",
         file_path=screenshot_path
     )
-
 
 except Exception as e:
     log(f"❌ Login failed: {str(e)}")
@@ -207,6 +208,7 @@ except Exception as e:
 finally:
     log("Closing browser...")
     driver.quit()
+
 
 
 
