@@ -29,13 +29,19 @@ IMAP_SERVER = os.environ.get("IMAP_SERVER")
 AXOS_USERNAME = os.environ.get("AXOS_USERNAME")
 AXOS_PASSWORD = os.environ.get("AXOS_PASSWORD")
 
-FROM_EMAIL = os.environ.get("FROM_EMAIL")
-TO_EMAIL = os.environ.get("TO_EMAIL")
-SMTP_PASSWORD = os.environ.get("EMAIL_SMTP_APP_PASSWORD")
 
 
 # ================== EMAIL FUNCTION ==================
+
 def send_email_with_attachment(subject, body, file_path):
+
+    FROM_EMAIL = os.environ.get("FROM_EMAIL")
+    TO_EMAIL = os.environ.get("TO_EMAIL")
+    SMTP_PASSWORD = os.environ.get("EMAIL_SMTP_APP_PASSWORD")
+    
+    if not FROM_EMAIL or not TO_EMAIL or not SMTP_PASSWORD:
+    raise ValueError("❌ Missing FROM_EMAIL, TO_EMAIL, or EMAIL_SMTP_APP_PASSWORD in environment variables.")
+
     log("Preparing email with screenshot...")
     msg = MIMEMultipart()
     msg["From"] = FROM_EMAIL
@@ -215,3 +221,4 @@ except Exception as e:
 finally:
     log("Closing browser...")
     driver.quit()
+
