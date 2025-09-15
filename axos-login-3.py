@@ -40,7 +40,7 @@ def send_email_with_attachment(subject, body, file_path):
     SMTP_PASSWORD = os.environ.get("EMAIL_SMTP_APP_PASSWORD")
     
     if not FROM_EMAIL or not TO_EMAIL or not SMTP_PASSWORD:
-    raise ValueError("❌ Missing FROM_EMAIL, TO_EMAIL, or EMAIL_SMTP_APP_PASSWORD in environment variables.")
+        raise ValueError("❌ Missing FROM_EMAIL, TO_EMAIL, or EMAIL_SMTP_APP_PASSWORD in environment variables.")
 
     log("Preparing email with screenshot...")
     msg = MIMEMultipart()
@@ -221,4 +221,5 @@ except Exception as e:
 finally:
     log("Closing browser...")
     driver.quit()
+
 
