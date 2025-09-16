@@ -9,6 +9,7 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email import encoders
+import time
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -155,7 +156,7 @@ try:
     driver.get("https://ws.axosclearing.com/?idp=Axos")
 
     log("Waiting for username field...")
-    WebDriverWait(driver, 20).until(
+    WebDriverWait(driver, 30).until(
         EC.presence_of_element_located((By.ID, "b1-b4-InputField"))
     )
 
@@ -165,6 +166,7 @@ try:
     driver.find_element(By.ID, "b1-signInButton").click()
 
     log("Waiting for OTP input field...")
+    time.sleep(5)
     otp_input = WebDriverWait(driver, 30).until(
         EC.presence_of_element_located((By.ID, "b1-b2-b5-InputField"))
     )
@@ -224,6 +226,7 @@ except Exception as e:
 finally:
     log("Closing browser...")
     driver.quit()
+
 
 
 
