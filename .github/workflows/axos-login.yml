@@ -2,7 +2,7 @@ name: Axos Login Automation (Hourly Burst)
 
 on:
   schedule:
-     - cron: "0 7-16 * * *"
+     - cron: "15 * * * *"
 
   workflow_dispatch:  # Optional manual trigger
 
