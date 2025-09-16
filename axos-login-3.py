@@ -28,44 +28,9 @@ PASSWORD = os.environ.get("EMAIL_PASSWORD")
 IMAP_SERVER = os.environ.get("IMAP_SERVER")
 AXOS_USERNAME = os.environ.get("AXOS_USERNAME")
 AXOS_PASSWORD = os.environ.get("AXOS_PASSWORD")
-
-
-
-# ================== EMAIL FUNCTION ==================
-
-def send_email_with_attachment(subject, body, file_path):
-
-    FROM_EMAIL = os.environ.get("FROM_EMAIL")
-    TO_EMAIL = os.environ.get("TO_EMAIL")
-    SMTP_PASSWORD = os.environ.get("EMAIL_SMTP_APP_PASSWORD")
-    
-    if not FROM_EMAIL or not TO_EMAIL or not SMTP_PASSWORD:
-        raise ValueError("❌ Missing FROM_EMAIL, TO_EMAIL, or EMAIL_SMTP_APP_PASSWORD in environment variables.")
-
-    log("Preparing email with screenshot...")
-    msg = MIMEMultipart()
-    msg["From"] = FROM_EMAIL
-    msg["To"] = TO_EMAIL
-    msg["Subject"] = subject
-
-    msg.attach(MIMEText(body, "plain"))
-
-    with open(file_path, "rb") as attachment:
-        part = MIMEBase("application", "octet-stream")
-        part.set_payload(attachment.read())
-        encoders.encode_base64(part)
-        part.add_header(
-            "Content-Disposition", f'attachment; filename={os.path.basename(file_path)}'
-        )
-        msg.attach(part)
-
-    log("Sending email...")
-    server = smtplib.SMTP("smtp.gmail.com", 587)
-    server.starttls()
-    server.login(FROM_EMAIL, SMTP_PASSWORD)
-    server.sendmail(FROM_EMAIL, TO_EMAIL, msg.as_string())
-    server.quit()
-    log("✅ Email sent successfully.")
+FROM_EMAIL = os.environ.get("FROM_EMAIL")
+TO_EMAIL = os.environ.get("TO_EMAIL")
+SMTP_PASSWORD = os.environ.get("EMAIL_SMTP_APP_PASSWORD")
 
 
 # ================== OTP FETCH FUNCTION ==================
@@ -134,6 +99,44 @@ def fetch_latest_otp(wait_time=60, check_interval=5):
 
     log("❌ OTP not found within time limit")
     return None
+
+
+# ================== EMAIL FUNCTION ==================
+
+def send_email_with_attachment(subject, body, file_path):
+
+   
+    
+    if not FROM_EMAIL or not TO_EMAIL or not SMTP_PASSWORD:
+        raise ValueError("❌ Missing FROM_EMAIL, TO_EMAIL, or EMAIL_SMTP_APP_PASSWORD in environment variables.")
+
+    log("Preparing email with screenshot...")
+    msg = MIMEMultipart()
+    msg["From"] = FROM_EMAIL
+    msg["To"] = TO_EMAIL
+    msg["Subject"] = subject
+
+    msg.attach(MIMEText(body, "plain"))
+
+    with open(file_path, "rb") as attachment:
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload(attachment.read())
+        encoders.encode_base64(part)
+        part.add_header(
+            "Content-Disposition", f'attachment; filename={os.path.basename(file_path)}'
+        )
+        msg.attach(part)
+
+    log("Sending email...")
+    server = smtplib.SMTP("smtp.gmail.com", 587)
+    server.starttls()
+    server.login(FROM_EMAIL, SMTP_PASSWORD)
+    server.sendmail(FROM_EMAIL, TO_EMAIL, msg.as_string())
+    server.quit()
+    log("✅ Email sent successfully.")
+
+
+
 
 
 # ================== SELENIUM LOGIN ==================
@@ -221,5 +224,6 @@ except Exception as e:
 finally:
     log("Closing browser...")
     driver.quit()
+
 
 
