@@ -42,12 +42,18 @@ jobs:
         IMAP_SERVER: ${{ secrets.IMAP_SERVER }}
         AXOS_USERNAME: ${{ secrets.AXOS_USERNAME }}
         AXOS_PASSWORD: ${{ secrets.AXOS_PASSWORD }}
+        FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+        TO_EMAIL: ${{ secrets.TO_EMAIL }}
+        EMAIL_SMTP_APP_PASSWORD: ${{ secrets.EMAIL_SMTP_APP_PASSWORD }}
       run: |
         echo "EMAIL_USERNAME=$EMAIL_USERNAME" >> $GITHUB_ENV
         echo "EMAIL_PASSWORD=$EMAIL_PASSWORD" >> $GITHUB_ENV
         echo "IMAP_SERVER=$IMAP_SERVER" >> $GITHUB_ENV
         echo "AXOS_USERNAME=$AXOS_USERNAME" >> $GITHUB_ENV
         echo "AXOS_PASSWORD=$AXOS_PASSWORD" >> $GITHUB_ENV
+        echo "FROM_EMAIL=$FROM_EMAIL" >> $GITHUB_ENV
+        echo "TO_EMAIL=$TO_EMAIL" >> $GITHUB_ENV
+        echo "EMAIL_SMTP_APP_PASSWORD=$EMAIL_SMTP_APP_PASSWORD" >> $GITHUB_ENV
 
     - name: 🧪 Run Axos login script
       run: python axos-login-3.py
