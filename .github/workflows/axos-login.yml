@@ -2,18 +2,7 @@ name: Axos Login Automation (Hourly Burst)
 
 on:
   schedule:
-    - cron: '30 15 15 9 *'  # 9:00 PM IST
-    - cron: '35 15 15 9 *'  # 9:05 PM IST
-    - cron: '40 15 15 9 *'  # 9:10 PM IST
-    - cron: '45 15 15 9 *'  # 9:15 PM IST
-    - cron: '50 15 15 9 *'  # 9:20 PM IST
-    - cron: '55 15 15 9 *'  # 9:25 PM IST
-    - cron: '0 16 15 9 *'   # 9:30 PM IST
-    - cron: '5 16 15 9 *'   # 9:35 PM IST
-    - cron: '10 16 15 9 *'  # 9:40 PM IST
-    - cron: '15 16 15 9 *'  # 9:45 PM IST
-    - cron: '20 16 15 9 *'  # 9:50 PM IST
-    - cron: '25 16 15 9 *'  # 9:55 PM IST
+     - cron: "0 6-16 * * *"
 
   workflow_dispatch:  # Optional manual trigger
 
