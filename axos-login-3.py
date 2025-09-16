@@ -205,6 +205,8 @@ try:
 
     log("✅ Login successful!")
 
+    time.sleep(15)
+
     # Save screenshot
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     folder_path = "screenshots"
@@ -226,6 +228,7 @@ except Exception as e:
 finally:
     log("Closing browser...")
     driver.quit()
+
 
 
 
